@@ -49,7 +49,7 @@ item_url_fmt = 'http://www.ubiaoqing.com/biaoqingbao/{}'
 
 
 def main():
-    print('do sth')
+    print('ecff53dddd655de1fdd321b57408db28'.__len__())
 
 
 if __name__ == '__main__':
