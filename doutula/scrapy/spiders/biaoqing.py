@@ -12,6 +12,7 @@ import scrapy
 from scrapy import Request
 from doutula.scrapy.items import UBiaoQingItem
 from doutula.scrapy.settings import FILE_PATH
+import traceback
 
 output_path = '{}/biaoqing_item.json'.format(FILE_PATH)
 
@@ -34,12 +35,16 @@ class UBiaoQingSpider(scrapy.Spider):
         biaoqing['url'] = response.url
         biaoqing['id'] = response.meta['id']
 
-        img_url = response.selector.xpath('//div[contains(@class,"panel-body")]/div/img')
-        biaoqing['src_url'] = img_url.xpath('@src')[0].extract().strip()
-        # biaoqing['title'] = img_url.xpath('@title')[0].extract().strip()
+        try:
+            img_url = response.selector.xpath('//div[contains(@class,"panel-body")]/div/img')
+            biaoqing['src_url'] = img_url.xpath('@src')[0].extract().strip()
+            # biaoqing['title'] = img_url.xpath('@title')[0].extract().strip()
 
-        tags_url = response.selector.xpath('//ul[contains(@class,"tag-list")]//strong/text()')
-        biaoqing['tags'] = [item.extract().strip() for item in tags_url]
+            tags_url = response.selector.xpath('//ul[contains(@class,"tag-list")]//strong/text()')
+            biaoqing['tags'] = [item.extract().strip() for item in tags_url]
+        except Exception as e:
+            traceback.print_exc()
+            print(response)
 
         with open(output_path, 'a', encoding='utf-8') as fw:
             fw.write('{}\n'.format(biaoqing))
