@@ -24,8 +24,8 @@ class UBiaoQingSpider(scrapy.Spider):
         return [Request('http://www.ubiaoqing.com', callback=self.parse_list)]
 
     def parse_list(self, response):
-        # for i in range(1, 360000):
-        for i in range(1, 11):
+        for i in range(1, 360000):
+            # for i in range(1, 11):
             yield Request(item_url_fmt.format(i), callback=self.parse_item, meta={'id': i})
 
     def parse_item(self, response):
