@@ -12,18 +12,15 @@
 from os.path import abspath, dirname
 import os
 
+FILE_PATH = dirname(abspath(__file__)) + os.sep + 'file' + os.sep
+
 BOT_NAME = 'doutula'
 
 SPIDER_MODULES = ['doutula.scrapy.spiders']
 NEWSPIDER_MODULE = 'doutula.scrapy.spiders'
 
-FILE_PATH = dirname(abspath(__file__)) + os.sep + 'file' + os.sep
+ROBOTSTXT_OBEY = False
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'doutula (+http://www.yourdomain.com)'
-
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
