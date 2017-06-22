@@ -36,7 +36,11 @@ class UBiaoQingSpider(scrapy.Spider):
         with open(input_file, 'r', encoding='utf-8') as f:
             for line in f:
                 line = line.strip()
-                word, cnt = line.split('\t')
+                attr = line.split('\t')
+                if len(attr) != 2:
+                    print('err line: {}'.format(line))
+                    continue
+                word, cnt = attr
 
                 yield Request(search_url_fmt.format(word), callback=self.parse_item)
 
