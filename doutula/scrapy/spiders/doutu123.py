@@ -38,29 +38,34 @@ class Doutu123Spider(scrapy.Spider):
         json_data = json.loads(data)
 
         res_lst = []
-        for item in json_data['news']:
-            doutu = Doutu123Item()
 
-            doutu['url'] = item['furl']
-            uid = item['id']
+        try:
+            for item in json_data['news']:
+                doutu = Doutu123Item()
 
-            if 'source_data' in item and 'name' in item['source_data']:
-                doutu['desc'] = item['source_data']['name']
-            else:
-                doutu['desc'] = ''
+                doutu['url'] = item['furl']
+                uid = item['id']
 
-            if uid not in self.processed_id:
-                res_lst.append(doutu)
-                self.processed_id.add(uid)
-                doutu['id'] = uid
+                if 'source_data' in item and 'name' in item['source_data']:
+                    doutu['desc'] = item['source_data']['name']
+                else:
+                    doutu['desc'] = ''
+
+                if uid not in self.processed_id:
+                    res_lst.append(doutu)
+                    self.processed_id.add(uid)
+                    doutu['id'] = uid
+
+        except Exception as e:
+            print(json_data)
 
         with open(out_file, 'a', encoding='utf-8') as fw:
             for item in res_lst:
                 fw.write('{}\n'.format(item))
 
-        last_id = json_data['last_id']
-
-        yield FormRequest(url_fmt.format(last_id), callback=self.parse_list)
+        if 'last_id' in json_data:
+            last_id = json_data['last_id']
+            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list)
 
 
 def main():
