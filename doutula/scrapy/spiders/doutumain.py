@@ -71,8 +71,8 @@ class DoutuMainSpider(scrapy.Spider):
             num = total // 20 + 1
 
         # 如果搜索的数据量太多，那么这个请求没有什么用
-        # if num >= 50:
-        #     num = 1
+        if num >= 500:
+            num = 500
 
         for i in range(1, num):
             yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
