@@ -16,6 +16,7 @@ import re
 import requests
 import json
 
+input_file = '{}/doutu123.json.old'.format(FILE_PATH)
 out_file = '{}/doutu123.json'.format(FILE_PATH)
 
 url_fmt = 'http://mobile.doutu123.com/news/?last_id={}'
@@ -32,7 +33,19 @@ class Doutu123Spider(scrapy.Spider):
     processed_id = set()
 
     def start_requests(self):
-        return [FormRequest(url_fmt.format(29083208), callback=self.parse_list, headers=headers)]
+        request_list = []
+
+        with open(input_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+
+                json_data = json.loads(line)
+                uid = json_data['id']
+
+                request_list.append(FormRequest(url_fmt.format(uid), callback=self.parse_list, headers=headers))
+                self.processed_id.add(uid)
+
+        return request_list
 
     def parse_list(self, response):
         data = response.body.decode()
@@ -59,7 +72,7 @@ class Doutu123Spider(scrapy.Spider):
                     doutu['id'] = uid
 
         except Exception as e:
-            print(json_data)
+            print('ERROR: {}'.format(json_data))
 
         with open(out_file, 'a', encoding='utf-8') as fw:
             for item in res_lst:
@@ -70,7 +83,7 @@ class Doutu123Spider(scrapy.Spider):
 
 
 def test():
-    url = 'http://mobile.doutu123.com/news/?last_id=38578843'
+    url = 'http://mobile.doutu123.com/news/?last_id=84795981'
     response = requests.get(url, headers=headers)
     print(response.content.decode())
 
