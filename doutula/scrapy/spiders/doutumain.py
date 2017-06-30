@@ -29,6 +29,7 @@ search_fmt = 'http://search.doutu123.com/bbs/?content={}&last_id={}'
 topic_fmt = 'http://mobile.doutu123.com/theme/topic/{}'
 
 img_pat = re.compile('http://wxq\.pic\.doutusq\.com/.*?"')
+nohanzi_pat = re.compile('[^\u4e00-\u9fff]')
 
 
 class DoutuMainSpider(scrapy.Spider):
@@ -49,8 +50,13 @@ class DoutuMainSpider(scrapy.Spider):
 
                 word, cnt = attr
 
+                # 只要包含非汉字的，就都不要
+                # m = nohanzi_pat.search(word)
+                # if m:
+                #     continue
+
                 yield FormRequest(search_fmt.format(word, 0), callback=self.parse_list, headers=headers,
-                                  meta={'word': word,'start':True})
+                                  meta={'word': word, 'start': True})
 
     def parse_list(self, response):
         word = response.meta['word']
@@ -77,7 +83,7 @@ class DoutuMainSpider(scrapy.Spider):
 
             for i in range(1, num):
                 yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
-                                  meta={'word': word,'start':False})
+                                  meta={'word': word, 'start': False})
 
     def parse_item(self, response):
         content = response.body.decode()
