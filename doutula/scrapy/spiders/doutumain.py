@@ -50,7 +50,7 @@ class DoutuMainSpider(scrapy.Spider):
                 word, cnt = attr
 
                 yield FormRequest(search_fmt.format(word, 0), callback=self.parse_list, headers=headers,
-                                  meta={'word': word})
+                                  meta={'word': word,'start':True})
 
     def parse_list(self, response):
         word = response.meta['word']
@@ -63,20 +63,21 @@ class DoutuMainSpider(scrapy.Spider):
             yield FormRequest(topic_fmt.format(topic_id), callback=self.parse_item, headers=headers,
                               meta={'word': word})
 
-        total = json_data['total']
         # 如果有多页，多页请求
-        if total % 20 == 0:
-            num = total // 20
-        else:
-            num = total // 20 + 1
+        if response.meta['start']:
+            total = json_data['total']
+            if total % 20 == 0:
+                num = total // 20
+            else:
+                num = total // 20 + 1
 
-        # 如果搜索的数据量太多，那么这个请求没有什么用
-        if num >= 500:
-            num = 500
+            # 如果搜索的数据量太多，那么这个请求没有什么用
+            if num >= 500:
+                num = 500
 
-        for i in range(1, num):
-            yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
-                              meta={'word': word})
+            for i in range(1, num):
+                yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
+                                  meta={'word': word})
 
     def parse_item(self, response):
         content = response.body.decode()
