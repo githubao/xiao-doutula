@@ -60,7 +60,8 @@ class DoutuMainSpider(scrapy.Spider):
         # 解析数据
         for item in json_data['list']:
             topic_id = item['id']
-            yield FormRequest(topic_fmt.format(topic_id), callback=self.parse_item, headers=headers)
+            yield FormRequest(topic_fmt.format(topic_id), callback=self.parse_item, headers=headers,
+                              meta={'word': word})
 
         total = json_data['total']
         # 如果有多页，多页请求
@@ -68,6 +69,10 @@ class DoutuMainSpider(scrapy.Spider):
             num = total // 20
         else:
             num = total // 20 + 1
+
+        # 如果搜索的数据量太多，那么这个请求没有什么用
+        # if num >= 50:
+        #     num = 1
 
         for i in range(1, num):
             yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
@@ -81,6 +86,7 @@ class DoutuMainSpider(scrapy.Spider):
 
         doutu['title'] = json_data['post_info']['title']
         doutu['url'] = response.url
+        doutu['word'] = response.meta['word']
 
         url_set = set()
         for item in img_pat.findall(content):
