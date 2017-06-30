@@ -10,9 +10,14 @@
 
 from doutula.pth import FILE_PATH
 import json
+import hashlib
 
 input_path = '{}/doutu123.json'.format(FILE_PATH)
 out_path = '{}/doutu123_image.txt'.format(FILE_PATH)
+
+"""
+!sw300st.jpeg
+"""
 
 
 def process():
@@ -26,8 +31,14 @@ def process():
             for item in img_urls:
                 res_set.add(item)
 
-        for item in res_set:
-            fw.write('{}\n'.format(item))
+        for idx, item in enumerate(f, 1):
+            dic = {'id': idx, 'img_url': item, 'figure': get_hex(item)}
+            json.dump(dic, dic, sort_keys=True, ensure_ascii=False)
+            fw.write('\n')
+
+
+def get_hex(url):
+    return hashlib.md5(url.encode()).hexdigest()
 
 
 def main():
