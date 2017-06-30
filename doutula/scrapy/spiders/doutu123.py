@@ -38,7 +38,7 @@ class Doutu123Spider(scrapy.Spider):
         data = response.body.decode()
         json_data = json.loads(data)
 
-        print(json_data)
+        # print(json_data)
 
         res_lst = []
         try:
