@@ -11,7 +11,7 @@
 import scrapy
 from scrapy import Request
 from doutula.scrapy.items import UBiaoQingItem
-from doutula.scrapy.settings import FILE_PATH
+from doutula.pth import FILE_PATH
 import traceback
 
 output_path = '{}/biaoqing_item.json'.format(FILE_PATH)

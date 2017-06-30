@@ -15,7 +15,7 @@ import scrapy
 from scrapy.http import FormRequest
 
 from doutula.scrapy.items import Doutu123Item
-from doutula.scrapy.settings import FILE_PATH
+from doutula.pth import FILE_PATH
 
 out_file = '{}/doutu123.json'.format(FILE_PATH)
 url_fmt = 'http://mobile.doutu123.com/news/?last_id={}'

@@ -16,7 +16,7 @@
 
 import threadpool
 import threading
-from doutula.scrapy.settings import FILE_PATH
+from doutula.pth import FILE_PATH
 import requests
 import os
 import json

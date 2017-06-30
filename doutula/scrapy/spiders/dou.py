@@ -11,7 +11,7 @@
 import scrapy
 from scrapy import Request
 from doutula.scrapy.items import DoutulaItem
-from doutula.scrapy.settings import FILE_PATH
+from doutula.pth import FILE_PATH
 
 output_path = '{}/doutu_item.json'.format(FILE_PATH)
 
