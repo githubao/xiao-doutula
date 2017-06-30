@@ -33,7 +33,7 @@ def process():
 
         for idx, item in enumerate(f, 1):
             dic = {'id': idx, 'img_url': item, 'figure': get_hex(item)}
-            json.dump(dic, dic, sort_keys=True, ensure_ascii=False)
+            json.dump(dic, fw, sort_keys=True, ensure_ascii=False)
             fw.write('\n')
 
 
