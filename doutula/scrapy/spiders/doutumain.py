@@ -70,7 +70,7 @@ class DoutuMainSpider(scrapy.Spider):
             num = total // 20 + 1
 
         for i in range(1, num):
-            yield FormRequest(search_fmt.format(word, num * 20), callback=self.parse_list, headers=headers,
+            yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
                               meta={'word': word})
 
     def parse_item(self, response):
@@ -80,6 +80,7 @@ class DoutuMainSpider(scrapy.Spider):
         doutu = Doutu123Item()
 
         doutu['title'] = json_data['post_info']['title']
+        doutu['url'] = response.url
 
         url_set = set()
         for item in img_pat.findall(content):
@@ -87,7 +88,8 @@ class DoutuMainSpider(scrapy.Spider):
                 item = item[:item.find('!')]
                 url_set.add(item)
 
-        doutu['urls'] = [url for url in url_set]
+        doutu['img_urls'] = [url for url in url_set]
+        doutu['img_cnt'] = len(doutu['img_urls'])
 
         with open(out_file, 'a', encoding='utf-8') as fw:
             fw.write('{}\n'.format(doutu))
