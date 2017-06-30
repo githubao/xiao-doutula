@@ -51,9 +51,9 @@ class DoutuMainSpider(scrapy.Spider):
                 word, cnt = attr
 
                 # 只要包含非汉字的，就都不要
-                # m = nohanzi_pat.search(word)
-                # if m:
-                #     continue
+                m = nohanzi_pat.search(word)
+                if m:
+                    continue
 
                 yield FormRequest(search_fmt.format(word, 0), callback=self.parse_list, headers=headers,
                                   meta={'word': word, 'start': True})
@@ -78,8 +78,8 @@ class DoutuMainSpider(scrapy.Spider):
                 num = total // 20 + 1
 
             # 如果搜索的数据量太多，那么这个请求没有什么用
-            if num >= 500:
-                num = 500
+            if num >= 50:
+                num = 50
 
             for i in range(1, num):
                 yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
