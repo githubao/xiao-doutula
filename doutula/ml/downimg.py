@@ -84,8 +84,8 @@ def process_line(line):
     line = line.strip()
     json_data = json.loads(line)
 
-    if not json_data['image_url']:
-        return None
+    # if not json_data['img_url']:
+    #     return None
 
     dic = {}
     dic['id'] = json_data['id']
