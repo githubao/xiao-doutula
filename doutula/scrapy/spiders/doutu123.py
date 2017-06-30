@@ -37,8 +37,9 @@ class Doutu123Spider(scrapy.Spider):
         data = response.body.decode()
         json_data = json.loads(data)
 
-        res_lst = []
+        print(json_data)
 
+        res_lst = []
         try:
             for item in json_data['news']:
                 doutu = Doutu123Item()
