@@ -12,8 +12,6 @@
 from os.path import abspath, dirname
 import os
 
-FILE_PATH = dirname(abspath(__file__)) + os.sep + 'file' + os.sep
-
 BOT_NAME = 'doutula'
 
 SPIDER_MODULES = ['doutula.scrapy.spiders']

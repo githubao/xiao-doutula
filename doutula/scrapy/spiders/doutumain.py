@@ -15,7 +15,7 @@ import scrapy
 from scrapy.http import FormRequest
 
 from doutula.scrapy.items import Doutu123Item
-from doutula.scrapy.settings import FILE_PATH
+from doutula.pth import FILE_PATH
 import re
 
 input_file = '{}/words.txt'.format(FILE_PATH)
