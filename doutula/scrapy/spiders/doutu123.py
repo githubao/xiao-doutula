@@ -17,6 +17,7 @@ import requests
 import json
 
 input_file = '{}/doutu123.json.old'.format(FILE_PATH)
+input_file2 = '{}/doutu123.txt'.format(FILE_PATH)
 out_file = '{}/doutu123.json'.format(FILE_PATH)
 
 url_fmt = 'http://mobile.doutu123.com/news/?last_id={}'
@@ -32,7 +33,7 @@ class Doutu123Spider(scrapy.Spider):
 
     processed_id = set()
 
-    def start_requests(self):
+    def start_requests1(self):
         request_list = []
 
         with open(input_file, 'r', encoding='utf-8') as f:
@@ -41,6 +42,20 @@ class Doutu123Spider(scrapy.Spider):
 
                 json_data = json.loads(line)
                 uid = json_data['id']
+
+                request_list.append(FormRequest(url_fmt.format(uid), callback=self.parse_list, headers=headers))
+                self.processed_id.add(uid)
+
+        return request_list
+
+    def start_requests(self):
+        request_list = []
+
+        with open(input_file2, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+
+                uid = int(line)
 
                 request_list.append(FormRequest(url_fmt.format(uid), callback=self.parse_list, headers=headers))
                 self.processed_id.add(uid)
@@ -88,8 +103,15 @@ def test():
     print(response.content.decode())
 
 
+def test2():
+    with open("C:\\Users\\BaoQiang\\Desktop\\1.txt", 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        for item in json_data['emotions']:
+            print(item['online_id'])
+
+
 def main():
-    test()
+    test2()
 
 
 if __name__ == '__main__':
