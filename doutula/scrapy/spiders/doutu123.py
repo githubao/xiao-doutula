@@ -65,7 +65,7 @@ class Doutu123Spider(scrapy.Spider):
 
         if 'last_id' in json_data:
             last_id = json_data['last_id']
-            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list)
+            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list, headers=self.headers)
 
 
 def main():
