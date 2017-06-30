@@ -77,7 +77,7 @@ class DoutuMainSpider(scrapy.Spider):
 
             for i in range(1, num):
                 yield FormRequest(search_fmt.format(word, i * 20), callback=self.parse_list, headers=headers,
-                                  meta={'word': word})
+                                  meta={'word': word,'start':False})
 
     def parse_item(self, response):
         content = response.body.decode()
