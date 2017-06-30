@@ -31,7 +31,7 @@ def process():
             for item in img_urls:
                 res_set.add(item)
 
-        for idx, item in enumerate(f, 1):
+        for idx, item in enumerate(res_set, 1):
             dic = {'id': idx, 'img_url': item, 'figure': get_hex(item)}
             json.dump(dic, fw, sort_keys=True, ensure_ascii=False)
             fw.write('\n')
