@@ -28,7 +28,7 @@ headers = {
 search_fmt = 'http://search.doutu123.com/bbs/?content={}&last_id={}'
 topic_fmt = 'http://mobile.doutu123.com/theme/topic/{}'
 
-img_pat = re.compile('http://wxq\.pic\.doutusq\.com/(.*?)"')
+img_pat = re.compile('http://wxq\.pic\.doutusq\.com/.*?"')
 
 
 class DoutuMainSpider(scrapy.Spider):
@@ -87,7 +87,7 @@ class DoutuMainSpider(scrapy.Spider):
                 item = item[:item.find('!')]
                 url_set.add(item)
 
-        doutu['urls'] = [url_set]
+        doutu['urls'] = [url for url in url_set]
 
         with open(out_file, 'a', encoding='utf-8') as fw:
             fw.write('{}\n'.format(doutu))
@@ -96,8 +96,17 @@ class DoutuMainSpider(scrapy.Spider):
             # total = json_data['post_info']['comment_num']
 
 
+def test():
+    pat = re.compile('1.')
+
+    s = '12312'
+
+    for i in pat.findall(s):
+        print(i)
+
+
 def main():
-    print('do sth')
+    test()
 
 
 if __name__ == '__main__':
