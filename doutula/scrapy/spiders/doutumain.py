@@ -86,6 +86,8 @@ class DoutuMainSpider(scrapy.Spider):
         for item in img_pat.findall(content):
             if '!' in item:
                 item = item[:item.find('!')]
+            else:
+                item = item[:-1]
 
             url_set.add(item)
 
@@ -103,6 +105,8 @@ def test():
     pat = re.compile('1.')
 
     s = '12312'
+
+    print(s[:-1])
 
     for i in pat.findall(s):
         print(i)
