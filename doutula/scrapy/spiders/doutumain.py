@@ -26,7 +26,7 @@ headers = {
 }
 
 search_fmt = 'http://search.doutu123.com/bbs/?content={}&last_id={}'
-topic_fmt = 'http://mobile.doutu123.com/theme/topic/{}/'
+topic_fmt = 'http://mobile.doutu123.com/theme/topic/{}'
 
 img_pat = re.compile('http://wxq\.pic\.doutusq\.com/(.*?)"')
 
