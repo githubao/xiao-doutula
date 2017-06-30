@@ -86,7 +86,8 @@ class DoutuMainSpider(scrapy.Spider):
         for item in img_pat.findall(content):
             if '!' in item:
                 item = item[:item.find('!')]
-                url_set.add(item)
+
+            url_set.add(item)
 
         doutu['img_urls'] = [url for url in url_set]
         doutu['img_cnt'] = len(doutu['img_urls'])
