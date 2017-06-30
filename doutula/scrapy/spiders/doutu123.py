@@ -8,18 +8,16 @@
 @time: 2017/6/30 11:02
 """
 
-import scrapy
-from scrapy.http import FormRequest
-from doutula.scrapy.items import Doutu123Item
-from doutula.scrapy.settings import FILE_PATH
-import re
-import requests
 import json
 
-input_file = '{}/doutu123.json.old'.format(FILE_PATH)
-input_file2 = '{}/doutu123.txt'.format(FILE_PATH)
-out_file = '{}/doutu123.json'.format(FILE_PATH)
+import requests
+import scrapy
+from scrapy.http import FormRequest
 
+from doutula.scrapy.items import Doutu123Item
+from doutula.scrapy.settings import FILE_PATH
+
+out_file = '{}/doutu123.json'.format(FILE_PATH)
 url_fmt = 'http://mobile.doutu123.com/news/?last_id={}'
 
 headers = {
@@ -33,36 +31,14 @@ class Doutu123Spider(scrapy.Spider):
 
     processed_id = set()
 
-    def start_requests1(self):
-        request_list = []
-
-        with open(input_file, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-
-                json_data = json.loads(line)
-                uid = json_data['id']
-
-                request_list.append(FormRequest(url_fmt.format(uid), callback=self.parse_list, headers=headers))
-                self.processed_id.add(uid)
-
-        return request_list
-
     def start_requests(self):
-        request_list = []
-
-        with open(input_file2, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-
-                uid = int(line)
-
-                request_list.append(FormRequest(url_fmt.format(uid), callback=self.parse_list, headers=headers))
-                self.processed_id.add(uid)
-
-        return request_list
+        return [FormRequest('http://mobile.doutu123.com/news/', callback=self.parse_list, headers=headers)]
 
     def parse_list(self, response):
+        for i in range(1, 100000001):
+            yield FormRequest(url_fmt.format(i), callback=self.parse_item, headers=headers)
+
+    def parse_item(self, response):
         data = response.body.decode()
         json_data = json.loads(data)
 
@@ -94,11 +70,11 @@ class Doutu123Spider(scrapy.Spider):
                 fw.write('{}\n'.format(item))
 
         for item in res_lst:
-            yield FormRequest(url_fmt.format(item['id']), callback=self.parse_list, headers=headers)
+            yield FormRequest(url_fmt.format(item['id']), callback=self.parse_item, headers=headers)
 
 
 def test():
-    url = 'http://mobile.doutu123.com/news/?last_id=84795981'
+    url = 'http://mobile.doutu123.com/news/?last_id=82182416'
     response = requests.get(url, headers=headers)
     print(response.content.decode())
 
@@ -111,7 +87,7 @@ def test2():
 
 
 def main():
-    test2()
+    test()
 
 
 if __name__ == '__main__':
