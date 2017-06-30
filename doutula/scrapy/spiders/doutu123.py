@@ -65,13 +65,12 @@ class Doutu123Spider(scrapy.Spider):
             for item in res_lst:
                 fw.write('{}\n'.format(item))
 
-        if 'last_id' in json_data:
-            last_id = json_data['last_id']
-            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list, headers=headers)
+        for item in res_lst:
+            yield FormRequest(url_fmt.format(item['id']), callback=self.parse_list, headers=headers)
 
 
 def test():
-    url = 'http://mobile.doutu123.com/user/query?ids=18471005'
+    url = 'http://mobile.doutu123.com/news/?last_id=38578843'
     response = requests.get(url, headers=headers)
     print(response.content.decode())
 
