@@ -13,11 +13,16 @@ from scrapy.http import FormRequest
 from doutula.scrapy.items import Doutu123Item
 from doutula.scrapy.settings import FILE_PATH
 import re
+import requests
 import json
 
 out_file = '{}/doutu123.json'.format(FILE_PATH)
 
 url_fmt = 'http://mobile.doutu123.com/news/?last_id={}'
+
+headers = {
+    'ticket': 'xUSfLshuWc7tmVLqGfynGE'
+}
 
 
 class Doutu123Spider(scrapy.Spider):
@@ -26,12 +31,8 @@ class Doutu123Spider(scrapy.Spider):
 
     processed_id = set()
 
-    headers = {
-        'ticket': 'xUSfLshuWc7tmVLqGfynGE'
-    }
-
     def start_requests(self):
-        return [FormRequest(url_fmt.format(47475973), callback=self.parse_list, headers=self.headers)]
+        return [FormRequest(url_fmt.format(29083208), callback=self.parse_list, headers=headers)]
 
     def parse_list(self, response):
         data = response.body.decode()
@@ -66,11 +67,17 @@ class Doutu123Spider(scrapy.Spider):
 
         if 'last_id' in json_data:
             last_id = json_data['last_id']
-            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list, headers=self.headers)
+            yield FormRequest(url_fmt.format(last_id), callback=self.parse_list, headers=headers)
+
+
+def test():
+    url = 'http://mobile.doutu123.com/user/query?ids=18471005'
+    response = requests.get(url, headers=headers)
+    print(response.content.decode())
 
 
 def main():
-    print('do sth')
+    test()
 
 
 if __name__ == '__main__':
