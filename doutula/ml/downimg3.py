@@ -2,10 +2,10 @@
 # encoding: utf-8
 
 """
-@description: 异步io 下载图片
+@description: 线程池下载
 
 @author: BaoQiang
-@time: 2017/7/1 10:31
+@time: 2017/7/1 10:56
 """
 
 import sys
@@ -13,8 +13,8 @@ import time
 import os
 from doutula.ml.downimg import load_datas
 
-import asyncio
-import aiohttp
+from concurrent import futures
+import requests
 
 BASE_PATH = '/data/baoqiang/product/doutu/image'
 
@@ -24,31 +24,27 @@ def save_flag(img, filename):
         fw.write(img)
 
 
-@asyncio.coroutine
 def get_flag(url):
-    resp = yield aiohttp.request('GET', url)
-    image = yield from resp.read()
-    return image
+    resp = requests.get(url)
+    return resp.content
 
 
-def download_many(dic_list):
-    loop = asyncio.get_event_loop()
-    to_do = [download_one(cc) for cc in dic_list]
-    wait_coro = asyncio.wait(to_do)
-    res, _ = loop.run_until_complete(wait_coro)
-    loop.close()
+MAX_WORKERS = 20
 
-    return len(res)
+def download_many(cc_list):
+    workers = min(MAX_WORKERS, len(cc_list))
+    with futures.ThreadPoolExecutor(workers) as executor:
+        res = executor.map(download_one, cc_list)
+
+    return len(list(res))
 
 
-@asyncio.coroutine
 def download_one(dic):
     url = dic['img_url']
-    image = yield from get_flag(url)
+    image = get_flag(url)
 
     md5 = dic['finger']
-
-    path = '{}/{}/{}/{}'.format(BASE_PATH,md5[0],md5[1],md5[2])
+    path = '{}/{}/{}/{}'.format(BASE_PATH, md5[0], md5[1], md5[2])
     if not os.path.exists(path):
         os.makedirs(path)
 
@@ -70,6 +66,7 @@ def run():
 
 def main():
     run()
+
 
 if __name__ == '__main__':
     main()
