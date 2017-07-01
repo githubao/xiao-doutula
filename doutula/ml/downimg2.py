@@ -33,7 +33,7 @@ def get_flag(url):
 
 def download_many(dic_list):
     loop = asyncio.get_event_loop()
-    to_do = [download_one(cc) for cc in sorted(dic_list)]
+    to_do = [download_one(cc) for cc in dic_list]
     wait_coro = asyncio.wait(to_do)
     res, _ = loop.run_until_complete(wait_coro)
     loop.close()
