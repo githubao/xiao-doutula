@@ -57,7 +57,7 @@ class SixFootSpider(scrapy.Spider):
             for item in res_list:
                 fw.write('{}\n'.format(item))
 
-                # yield Request(search_url_fmt.format(next_ts), callback=self.parse_item)
+        yield Request(search_url_fmt.format(next_ts), callback=self.parse_item)
 
 
 def run():
@@ -82,7 +82,7 @@ def run():
             json.dump(json_data, fw, ensure_ascii=False, sort_keys=True)
             fw.write('\n')
 
-            break
+            # break
 
 
 def parse_res(res):
