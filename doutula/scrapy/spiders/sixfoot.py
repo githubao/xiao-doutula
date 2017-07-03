@@ -22,6 +22,7 @@ from doutula.scrapy.items import SixFootItem
 
 out_file = '{}/sixfoot.json'.format(FILE_PATH)
 out_file2 = '{}/sixfoot_new.json'.format(FILE_PATH)
+out_file3 = '{}/sixfoot_final.json'.format(FILE_PATH)
 
 root_url = 'http://foooooot.com'
 
@@ -78,6 +79,7 @@ def run():
                 json_data['loc'] = parse_res(response)
             except Exception as e:
                 traceback.print_exc()
+                json_data['loc'] = None
 
             json.dump(json_data, fw, ensure_ascii=False, sort_keys=True)
             fw.write('\n')
@@ -103,8 +105,8 @@ def test():
 
 
 def run2():
-    with open('C:\\Users\\BaoQiang\\Desktop\\sixfoot_new.json', 'r', encoding='utf-8') as f, \
-            open('C:\\Users\\BaoQiang\\Desktop\\sixfoot.json', 'w', encoding='utf-8') as fw:
+    with open(out_file2, 'r', encoding='utf-8') as f, \
+            open(out_file3, 'w', encoding='utf-8') as fw:
         res_list = []
         for line in f:
             res_list.append(json.loads(line.strip()))
@@ -118,7 +120,7 @@ def run2():
 
 def main():
     # test()
-    # run()
+    run()
     run2()
 
 
