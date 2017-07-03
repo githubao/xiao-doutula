@@ -16,7 +16,8 @@ def run_spider():
     # cmdline.execute('scrapy crawl ubiaoqing_spider'.split())
     # cmdline.execute('scrapy crawl ubiaoqing2_spider'.split())
     # cmdline.execute('scrapy crawl doutu123_spider'.split())
-    cmdline.execute('scrapy crawl doutumain_spider'.split())
+    # cmdline.execute('scrapy crawl doutumain_spider'.split())
+    cmdline.execute('scrapy crawl sixfoot_spider'.split())
 
 
 def main():

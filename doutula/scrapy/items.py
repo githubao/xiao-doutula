@@ -8,6 +8,11 @@
 import json
 
 
+class SixFootItem(dict):
+    def __str__(self):
+        return json.dumps(self, ensure_ascii=False, sort_keys=True)
+
+
 class DoutulaItem(dict):
     def __str__(self):
         return json.dumps(self, ensure_ascii=False, sort_keys=True)
