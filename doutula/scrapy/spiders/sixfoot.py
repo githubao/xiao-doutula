@@ -71,32 +71,6 @@ def run():
             line = line.strip()
 
             json_data = json.loads(line)
-            try:
-                url = google_apis_fmt.format(json_data['latitude'], json_data['lngitude'])
-                response = requests.get(url, proxies={
-                    'http': 'http:127.0.0.1:8123',
-                    'https': 'http:127.0.0.1:8123'
-                })
-                json_data['loc'] = parse_res(response)
-            except Exception as e:
-                traceback.print_exc()
-                json_data['loc'] = None
-
-            json.dump(json_data, fw, ensure_ascii=False, sort_keys=True)
-            fw.write('\n')
-
-            break
-
-
-def run3():
-    google_apis_fmt = 'http://maps.google.com/maps/api/geocode/xml?latlng={:0.6f},{:0.6f}&language=zh-CN&sensor=false'
-
-    with open(out_file3, 'r', encoding='utf-8') as f, \
-            open(out_file4, 'w', encoding='utf-8') as fw:
-        for line in f:
-            line = line.strip()
-
-            json_data = json.loads(line)
             if not json_data['loc']:
                 try:
                     url = google_apis_fmt.format(json_data['latitude'], json_data['lngitude'])
@@ -148,8 +122,8 @@ def run2():
 
 def main():
     # test()
-    run3()
-    # run2()
+    run()
+    run2()
 
 
 if __name__ == '__main__':
