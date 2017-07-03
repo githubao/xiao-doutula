@@ -40,7 +40,7 @@ class SixFootSpider(scrapy.Spider):
 
         res_list = []
         for item in json_data['data']:
-            if item['pic_footprint_count'] >= 50:
+            if item['pic_footprint_count'] >= 0:
                 six = SixFootItem()
                 six['id'] = item['id']
                 six['name'] = item['name']
@@ -101,9 +101,25 @@ def test():
     fmt = '{:0.6f}'
     print(fmt.format(0.535))
 
+
+def run2():
+    with open('C:\\Users\\BaoQiang\\Desktop\\sixfoot_new.json', 'r', encoding='utf-8') as f, \
+            open('C:\\Users\\BaoQiang\\Desktop\\sixfoot.json', 'w', encoding='utf-8') as fw:
+        res_list = []
+        for line in f:
+            res_list.append(json.loads(line.strip()))
+
+        sorted_list = sorted(res_list, key=lambda x: x['voteup'], reverse=True)
+
+        for item in sorted_list:
+            json.dump(item, fw, ensure_ascii=False, sort_keys=True)
+            fw.write('\n')
+
+
 def main():
     # test()
-    run()
+    # run()
+    run2()
 
 
 if __name__ == '__main__':
