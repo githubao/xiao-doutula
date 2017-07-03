@@ -61,7 +61,7 @@ class SixFootSpider(scrapy.Spider):
 
 
 def run():
-    google_apis_fmt = 'http://maps.google.com/maps/api/geocode/xml?latlng={},{}&language=zh-CN&sensor=false'
+    google_apis_fmt = 'http://maps.google.com/maps/api/geocode/xml?latlng={:0.6f},{:0.6f}&language=zh-CN&sensor=false'
 
     with open(out_file, 'r', encoding='utf-8') as f, \
             open(out_file2, 'w', encoding='utf-8') as fw:
@@ -95,9 +95,11 @@ def test():
     # print(time.time())
 
     # 2010 - 03 - 03 14: 38:24
-    st = time.localtime(1267598304)
-    print(time.strftime('%Y-%m-%d %H:%M:%S', st))
+    # st = time.localtime(1267598304)
+    # print(time.strftime('%Y-%m-%d %H:%M:%S', st))
 
+    fmt = '{:0.6f}'
+    print(fmt.format(0.535))
 
 def main():
     # test()
