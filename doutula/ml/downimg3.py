@@ -17,9 +17,9 @@ import traceback
 from concurrent import futures
 import requests
 
-BASE_PATH = '/mnt/data/baoqiang/product/doutu/image'
+# BASE_PATH = '/mnt/data/baoqiang/product/doutu/image'
 
-# BASE_PATH = '/data/baoqiang/product/doutu/image'
+BASE_PATH = '/data/baoqiang/product/doutu/image'
 
 timeout = 10
 
@@ -38,7 +38,7 @@ def get_flag(url):
         traceback.print_exc()
 
 
-MAX_WORKERS = 50
+MAX_WORKERS = 25
 
 
 def download_many(cc_list):
