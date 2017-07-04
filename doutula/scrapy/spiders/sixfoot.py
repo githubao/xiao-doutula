@@ -86,7 +86,7 @@ def run():
             json.dump(json_data, fw, ensure_ascii=False, sort_keys=True)
             fw.write('\n')
 
-            break
+            # break
 
 
 def parse_res(res):
