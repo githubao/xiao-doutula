@@ -40,12 +40,16 @@ def download_many(cc_list):
     return len(list(res))
 
 
-def download_one(dic):
+def download_one_test(dic):
     print(dic['id'])
     return dic['img_url']
 
 
-def download_one2(dic):
+def download_one(dic):
+    if dic['id'] % 10000 == 0:
+        print('now process id: {}'.format(dic['id']))
+        sys.stdout.flush()
+
     url = dic['img_url']
     image = get_flag(url)
 
