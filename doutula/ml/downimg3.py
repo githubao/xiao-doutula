@@ -31,6 +31,7 @@ def get_flag(url):
 
 MAX_WORKERS = 20
 
+
 def download_many(cc_list):
     workers = min(MAX_WORKERS, len(cc_list))
     with futures.ThreadPoolExecutor(workers) as executor:
@@ -40,6 +41,11 @@ def download_many(cc_list):
 
 
 def download_one(dic):
+    print(dic['id'])
+    return dic['img_url']
+
+
+def download_one2(dic):
     url = dic['img_url']
     image = get_flag(url)
 
