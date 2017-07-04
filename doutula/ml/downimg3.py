@@ -12,11 +12,16 @@ import sys
 import time
 import os
 from doutula.ml.downimg import load_datas
+import traceback
 
 from concurrent import futures
 import requests
 
-BASE_PATH = '/data/baoqiang/product/doutu/image'
+BASE_PATH = '/mnt/data/baoqiang/product/doutu/image'
+
+# BASE_PATH = '/data/baoqiang/product/doutu/image'
+
+timeout = 10
 
 
 def save_flag(img, filename):
@@ -25,19 +30,23 @@ def save_flag(img, filename):
 
 
 def get_flag(url):
-    resp = requests.get(url)
-    return resp.content
+    try:
+        resp = requests.get(url, timeout=timeout)
+        return resp.content
+    except Exception as e:
+        print(url)
+        traceback.print_exc()
 
 
-MAX_WORKERS = 5
+MAX_WORKERS = 50
 
 
 def download_many(cc_list):
     workers = min(MAX_WORKERS, len(cc_list))
     with futures.ThreadPoolExecutor(workers) as executor:
-        res = executor.map(download_one, cc_list)
+        res = executor.map(download_one,cc_list)
 
-    return len(list(res))
+    return len(set(res))
 
 
 def download_one_test(dic):
@@ -46,12 +55,15 @@ def download_one_test(dic):
 
 
 def download_one(dic):
-    if dic['id'] % 10000 == 0:
+    if dic['id'] % 1000 == 0:
         print('now process id: {}'.format(dic['id']))
         sys.stdout.flush()
 
     url = dic['img_url']
     image = get_flag(url)
+    if not image:
+        print('download {} err'.format(dic['id']))
+        return ''
 
     md5 = dic['finger']
     path = '{}/{}/{}/{}'.format(BASE_PATH, md5[0], md5[1], md5[2])
