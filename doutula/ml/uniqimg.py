@@ -19,6 +19,29 @@ out_path = '{}/doutu123_image.txt'.format(FILE_PATH)
 !sw300st.jpeg
 """
 
+import os
+
+
+def cnt_sum():
+    path = '/data/baoqiang/product/doutu/image'
+
+    file_sum = 0
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            print(os.path.join(root, file))
+            print('*' * 30)
+
+        file_sum += len(files)
+    print('file len: {}'.format(file_sum))
+
+    dir_sum = 0
+    for root, dirs, files in os.walk(path):
+        for dir in dirs:
+            print(os.path.join(root, dir))
+            print('*' * 30)
+        dir_sum += len(dirs)
+    print('dir len: {}'.format(dir_sum))
+
 
 def process():
     res_set = set()

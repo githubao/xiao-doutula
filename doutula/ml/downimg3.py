@@ -29,7 +29,7 @@ def get_flag(url):
     return resp.content
 
 
-MAX_WORKERS = 20
+MAX_WORKERS = 5
 
 
 def download_many(cc_list):
