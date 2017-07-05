@@ -23,6 +23,7 @@ import threadpool
 from doutula.pth import *
 
 input_file = '{}/doutu123_image.txt'.format(FILE_PATH)
+err_file = '{}/err.txt'.format(FILE_PATH)
 root_path = '{}/img/'.format(FILE_PATH)
 
 pool_size = 50
@@ -65,12 +66,18 @@ def download_image(dic):
 
 
 def load_datas():
+    with open(err_file, 'r', encoding='utf-8') as f:
+        errs = [int(line.strip()) for line in f]
+
     datas = []
     with open(input_file, 'r', encoding='utf-8') as f:
         for line in f:
             dic = None
             try:
                 dic = process_line(line)
+                if dic['id'] not in errs:
+                    continue
+
             except Exception as e:
                 print('download img err occur: \t{}\t{}'.format(line, e))
 
